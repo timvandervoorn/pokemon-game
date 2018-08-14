@@ -35,6 +35,11 @@ class GameDetails extends PureComponent {
     updateGame(game.id, board)
   }
 
+  attack = (attack, damage) => {
+    console.log(attack)
+    console.log(damage)
+  }
+
   render() {
     const { game, users, authenticated, userId, pokemon, trainers } = this.props
 
@@ -72,7 +77,12 @@ class GameDetails extends PureComponent {
           <Board board={game.board} makeMove={this.makeMove} />
         )}
 
-        <BattleArena pokemon={pokemon} trainers={trainers} userId={userId} />
+        <BattleArena
+          pokemon={pokemon}
+          trainers={trainers}
+          userId={userId}
+          attack={this.attack}
+        />
       </Paper>
     )
   }
