@@ -31,9 +31,9 @@ class GameDetails extends PureComponent {
     updateGame(game.id, board)
   }
 
-
-
   render() {
+    new Audio('101-opening.mp3').play()
+    
     const {game, users, authenticated, userId} = this.props
 
     if (!authenticated) return (

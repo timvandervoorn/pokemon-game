@@ -4,16 +4,30 @@ import {
   Patch,
   Param,
   Body,
-  NotFoundError
+  NotFoundError,
+  Post,
+  BodyParam
 } from "routing-controllers"
 import Trainer from "../entities/trainer"
 
 @JsonController()
 export default class TrainerController {
+  
   @Get("/trainer")
   async getTrainer() {
     const trainer = await Trainer.find()
     return { trainer }
+  }
+
+  @Post("/trainer")
+  async newPokemon(
+    @BodyParam("firstName", { required: true }) firstName: string,
+    @BodyParam("lastName", { required: true }) lastName: string,
+  ) {
+    const trainer = await Trainer.create()
+    trainer.firstName = firstName
+    trainer.lastName = lastName
+    return trainer.save()
   }
 
   @Patch("/trainer/:id")

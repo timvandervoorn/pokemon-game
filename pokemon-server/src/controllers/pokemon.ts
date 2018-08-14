@@ -12,6 +12,7 @@ import Pokemon from "../entities/pokemon"
 
 @JsonController()
 export default class PokemonController {
+  
   @Get("/pokemon")
   async getPokemon() {
     const pokemon = await Pokemon.find()

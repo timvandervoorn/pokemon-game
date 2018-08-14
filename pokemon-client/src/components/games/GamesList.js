@@ -49,6 +49,7 @@ class GamesList extends PureComponent {
   }
 
   render() {
+    new Audio('101-opening.mp3').play()
     const {games, users, authenticated, createGame} = this.props
 
     if (!authenticated) return (
