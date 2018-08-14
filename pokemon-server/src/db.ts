@@ -4,8 +4,8 @@ import { NamingStrategyInterface } from "typeorm/naming-strategy/NamingStrategyI
 import { snakeCase } from "typeorm/util/StringUtils"
 import User from "./users/entity"
 import { Player, Game } from "./games/entities"
-import Pokemon from "./entities/pokemon";
-import Trainer from "./entities/trainer";
+import Pokemon from "./entities/pokemon"
+import Trainer from "./entities/trainer"
 
 class CustomNamingStrategy extends DefaultNamingStrategy
   implements NamingStrategyInterface {

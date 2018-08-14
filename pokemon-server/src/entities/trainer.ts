@@ -1,26 +1,29 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import Pokemon from "./pokemon";
-
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany
+} from "typeorm"
+import Pokemon from "./pokemon"
 
 @Entity()
-export default class Trainer extends BaseEntity{
+export default class Trainer extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id?: number
 
-    @PrimaryGeneratedColumn()
-    id?: number
+  @Column("text")
+  firstName: string
 
-    @Column('text')
-    firstName: string
+  @Column("text")
+  lastName: string
 
-    @Column('text')
-    lastName: string
+  @Column("text")
+  items: string
 
-    @Column('text')
-    items: string
+  @Column("text")
+  imageTrainer: string
 
-    @Column('text')
-    imageTrainer: string
-
-    @OneToMany(_ => Pokemon, pokemon => pokemon.trainer)
-    pokemons: Pokemon[]
-
+  @OneToMany(_ => Pokemon, pokemon => pokemon.trainer, { eager: true })
+  pokemons: Pokemon[]
 }

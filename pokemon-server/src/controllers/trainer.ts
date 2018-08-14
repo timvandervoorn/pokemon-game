@@ -22,7 +22,7 @@ export default class TrainerController {
   @Post("/trainer")
   async newPokemon(
     @BodyParam("firstName", { required: true }) firstName: string,
-    @BodyParam("lastName", { required: true }) lastName: string,
+    @BodyParam("lastName", { required: true }) lastName: string
   ) {
     const trainer = await Trainer.create()
     trainer.firstName = firstName
