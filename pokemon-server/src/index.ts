@@ -1,16 +1,18 @@
-import 'reflect-metadata'
-import { Action, BadRequestError, useKoaServer } from 'routing-controllers'
-import setupDb from './db'
-import UserController from './users/controller'
-import LoginController from './logins/controller'
-import GameController from './games/controller'
-import { verify } from './jwt'
-import User from './users/entity'
-import * as Koa from 'koa'
-import {Server} from 'http'
-import * as IO from 'socket.io'
-import * as socketIoJwtAuth from 'socketio-jwt-auth'
-import {secret} from './jwt'
+import "reflect-metadata"
+import { Action, BadRequestError, useKoaServer } from "routing-controllers"
+import setupDb from "./db"
+import UserController from "./users/controller"
+import LoginController from "./logins/controller"
+import GameController from "./games/controller"
+import { verify } from "./jwt"
+import User from "./users/entity"
+import * as Koa from "koa"
+import { Server } from "http"
+import * as IO from "socket.io"
+import * as socketIoJwtAuth from "socketio-jwt-auth"
+import { secret } from "./jwt"
+import PokemonController from "./controllers/pokemon"
+import TrainerController from "./controllers/trainer"
 
 const app = new Koa()
 const server = new Server(app.callback())
@@ -22,17 +24,18 @@ useKoaServer(app, {
   controllers: [
     UserController,
     LoginController,
-    GameController
+    GameController,
+    PokemonController,
+    TrainerController
   ],
   authorizationChecker: (action: Action) => {
     const header: string = action.request.headers.authorization
-    if (header && header.startsWith('Bearer ')) {
-      const [ , token ] = header.split(' ')
+    if (header && header.startsWith("Bearer ")) {
+      const [, token] = header.split(" ")
 
       try {
         return !!(token && verify(token))
-      }
-      catch (e) {
+      } catch (e) {
         throw new BadRequestError(e)
       }
     }
@@ -41,11 +44,11 @@ useKoaServer(app, {
   },
   currentUserChecker: async (action: Action) => {
     const header: string = action.request.headers.authorization
-    if (header && header.startsWith('Bearer ')) {
-      const [ , token ] = header.split(' ')
-      
+    if (header && header.startsWith("Bearer ")) {
+      const [, token] = header.split(" ")
+
       if (token) {
-        const {id} = verify(token)
+        const { id } = verify(token)
         return User.findOneById(id)
       }
     }
@@ -53,17 +56,19 @@ useKoaServer(app, {
   }
 })
 
-io.use(socketIoJwtAuth.authenticate({ secret }, async (payload, done) => {
-  const user = await User.findOneById(payload.id)
-  if (user) done(null, user)
-  else done(null, false, `Invalid JWT user ID`)
-}))
+io.use(
+  socketIoJwtAuth.authenticate({ secret }, async (payload, done) => {
+    const user = await User.findOneById(payload.id)
+    if (user) done(null, user)
+    else done(null, false, `Invalid JWT user ID`)
+  })
+)
 
-io.on('connect', socket => {
+io.on("connect", socket => {
   const name = socket.request.user.firstName
   console.log(`User ${name} just connected`)
 
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     console.log(`User ${name} just disconnected`)
   })
 })
