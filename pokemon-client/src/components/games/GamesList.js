@@ -8,12 +8,22 @@ import Paper from 'material-ui/Paper'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Typography from 'material-ui/Typography'
 import './GamesList.css'
+import soundFile from '../../audio/101-opening.mp3'
 
 class GamesList extends PureComponent {
+
+  sound = new Audio(soundFile)
+
+ onPlay(){
+   this.sound.play();
+ }
+
+
   componentWillMount() {
     if (this.props.authenticated) {
       if (this.props.games === null) this.props.getGames()
       if (this.props.users === null) this.props.getUsers()
+      
     }
   }
 
@@ -49,7 +59,7 @@ class GamesList extends PureComponent {
   }
 
   render() {
-    new Audio('101-opening.mp3').play()
+    this.onPlay()
     const {games, users, authenticated, createGame} = this.props
 
     if (!authenticated) return (
@@ -66,14 +76,14 @@ class GamesList extends PureComponent {
         className="create-game"
       >
         Create Game
-      </Button>
-
+        </Button>
       <div>
         {games.map(game => this.renderGame(game))}
       </div>
     </Paper>)
   }
 }
+
 
 const mapStateToProps = state => ({
   authenticated: state.currentUser !== null,
