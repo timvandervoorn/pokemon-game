@@ -117,16 +117,16 @@ class GameDetails extends PureComponent {
           <Board board={game.board} makeMove={this.makeMove} />
         )}
 
-        {/* {game.status !== "pending" && (
+        {game.status !== "pending" && (
           <BattleArena
-            pokemon={pokemon}
-            trainers={trainers}
+            // pokemon={pokemon}
+            // trainers={trainers}
             userId={userId}
             selectMove={this.selectMove}
-            player={player}
-            battlearena={game.trainers}
+            // player={player}
+            game={game}
           />
-        )} */}
+        )}
       </Paper>
     )
   }
