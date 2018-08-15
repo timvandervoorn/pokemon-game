@@ -1,9 +1,11 @@
+import { Player } from "./../games/entities"
 import {
   Entity,
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne
+  ManyToOne,
+  OneToMany
 } from "typeorm"
 import Trainer from "./trainer"
 
@@ -29,4 +31,10 @@ export default class Pokemon extends BaseEntity {
 
   @ManyToOne(_ => Trainer, trainer => trainer.pokemons)
   trainer: Trainer
+
+  @OneToMany(_ => Player, player => player.pokemon)
+  player: Player
+
+  //   @ManyToOne(_ => Player, player => player.pokemon)
+  //   player: Player
 }

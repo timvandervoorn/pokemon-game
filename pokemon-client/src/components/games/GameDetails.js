@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom"
 import { getGames, joinGame, updateGame } from "../../actions/games"
 import { getUsers } from "../../actions/users"
 import { userId } from "../../jwt"
-import { getPokemon } from "../../actions/pokemon"
+import { getPokemon, updatePokemonGame } from "../../actions/pokemon"
 import { getTrainers } from "../../actions/trainers"
 import Paper from "material-ui/Paper"
 import Board from "./Board"
@@ -36,12 +36,35 @@ class GameDetails extends PureComponent {
     updateGame(game.id, board)
   }
 
-  selectMove = (move, type) => {
+  selectMove = (move, type, userId, opponentTrainer, opponentPokemon) => {
+    const { game, updatePokemonGame } = this.props
+
     switch (type) {
       case attack:
         console.log("case attack")
         console.log(move.name)
         console.log(move.damage)
+        console.log(userId)
+        console.log(opponentPokemon)
+
+        const currentUsers = Object.values(this.props.users)
+
+        function findOpponent(users) {
+          return users.id !== userId
+        }
+
+        console.log(currentUsers)
+        const opponent = currentUsers.find(findOpponent)
+        console.log(opponent)
+
+        updatePokemonGame(
+          game.id,
+          move,
+          opponent.id,
+          opponentTrainer,
+          opponentPokemon
+        )
+
         break
       case item:
         console.log("case item")
@@ -96,13 +119,14 @@ class GameDetails extends PureComponent {
 
         {game.status !== "pending" && (
           <BattleArena
-            pokemon={pokemon}
-            trainers={trainers}
+            // pokemon={pokemon}
+            // trainers={trainers}
             userId={userId}
             selectMove={this.selectMove}
+            // player={player}
+            game={game}
           />
         )}
-        
       </Paper>
     )
   }
@@ -123,7 +147,8 @@ const mapDispatchToProps = {
   joinGame,
   updateGame,
   getPokemon,
-  getTrainers
+  getTrainers,
+  updatePokemonGame
 }
 
 export default connect(
