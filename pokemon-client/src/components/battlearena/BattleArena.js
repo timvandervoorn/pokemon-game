@@ -4,16 +4,18 @@ import { getPokemon } from "../../actions/pokemon"
 import { getTrainers } from "../../actions/trainers"
 import { userId } from "../../jwt"
 import { Redirect } from "react-router-dom"
+import { attack, item, pokemon, run } from "../../constants"
 
 class BattleArena extends PureComponent {
-  componentDidUpdate() {}
-
-  handleClick = (attack, damage) => {
-    this.props.attack(attack, damage)
+  handleClick = (move, type) => {
+    this.props.selectMove(move, type)
   }
 
   render() {
-    console.log(this.props)
+    {
+      this.props.trainers && console.log(this.props.trainers[0].pokemons)
+    }
+
     return (
       <div>
         <h1>BattleArena is rendered</h1>
@@ -24,15 +26,13 @@ class BattleArena extends PureComponent {
               <p>User id: {this.props.userId}</p>
               <p>Pokemon 1: {this.props.pokemon[0].name}</p>
               <ul>
-                {this.props.pokemon[0].attacks.map(attack => {
+                {this.props.pokemon[0].attacks.map(pokeAttack => {
                   return (
-                    <li>
+                    <li key={pokeAttack.name}>
                       <button
-                        onClick={() =>
-                          this.handleClick(attack.name, attack.damage)
-                        }
+                        onClick={() => this.handleClick(pokeAttack, attack)}
                       >
-                        {attack.name}
+                        {pokeAttack.name}
                       </button>
                     </li>
                   )
@@ -42,7 +42,7 @@ class BattleArena extends PureComponent {
               <ul>
                 {this.props.pokemon[1].attacks.map(attack => {
                   return (
-                    <li>
+                    <li key={attack.name}>
                       <button>{attack.name}</button>
                     </li>
                   )
@@ -56,7 +56,7 @@ class BattleArena extends PureComponent {
   }
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = () => {}
 
 const mapDispatchToProps = {}
 

@@ -10,6 +10,7 @@ import Paper from "material-ui/Paper"
 import Board from "./Board"
 import "./GameDetails.css"
 import BattleArena from "../battlearena/BattleArena"
+import { attack, item, pokemon, run } from "../../constants"
 
 class GameDetails extends PureComponent {
   componentWillMount() {
@@ -35,9 +36,25 @@ class GameDetails extends PureComponent {
     updateGame(game.id, board)
   }
 
-  attack = (attack, damage) => {
-    console.log(attack)
-    console.log(damage)
+  selectMove = (move, type) => {
+    switch (type) {
+      case attack:
+        console.log("case attack")
+        console.log(move.name)
+        console.log(move.damage)
+        break
+      case item:
+        console.log("case item")
+        break
+      case pokemon:
+        console.log("case pokemon")
+        break
+      case run:
+        console.log("case run")
+        break
+      default:
+        break
+    }
   }
 
   render() {
@@ -77,12 +94,14 @@ class GameDetails extends PureComponent {
           <Board board={game.board} makeMove={this.makeMove} />
         )}
 
-        <BattleArena
-          pokemon={pokemon}
-          trainers={trainers}
-          userId={userId}
-          attack={this.attack}
-        />
+        {game.status !== "pending" && (
+          <BattleArena
+            pokemon={pokemon}
+            trainers={trainers}
+            userId={userId}
+            selectMove={this.selectMove}
+          />
+        )}
       </Paper>
     )
   }
