@@ -13,6 +13,7 @@ class BattleArena extends PureComponent {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div>
         <h1>BattleArena is rendered</h1>
