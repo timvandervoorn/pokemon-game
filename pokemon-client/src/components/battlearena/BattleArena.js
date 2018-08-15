@@ -5,6 +5,7 @@ import { getTrainers } from "../../actions/trainers"
 import { userId } from "../../jwt"
 import { Redirect } from "react-router-dom"
 import { attack, item, pokemon, run } from "../../constants"
+import BattleArenaContainer from "./BattleArenaContainer";
 
 class BattleArena extends PureComponent {
   handleClick = (move, type) => {
@@ -12,13 +13,10 @@ class BattleArena extends PureComponent {
   }
 
   render() {
-    {
-      this.props.trainers && console.log(this.props.trainers[0].pokemons)
-    }
-
     return (
       <div>
         <h1>BattleArena is rendered</h1>
+        <BattleArenaContainer pokemon={this.props.pokemon}/>
 
         <div>
           {this.props.pokemon && (
@@ -51,7 +49,7 @@ class BattleArena extends PureComponent {
             </div>
           )}
         </div>
-      </div>
+      // </div>
     )
   }
 }
