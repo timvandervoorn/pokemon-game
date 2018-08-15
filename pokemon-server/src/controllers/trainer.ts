@@ -12,6 +12,7 @@ import Trainer from "../entities/trainer"
 
 @JsonController()
 export default class TrainerController {
+  
   @Get("/trainer")
   async getTrainer() {
     const trainer = await Trainer.find()
