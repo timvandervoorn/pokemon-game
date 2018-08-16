@@ -57,6 +57,17 @@ export const calculateWinner = (board: Board): Symbol | null =>
 export const finished = (board: Board): boolean =>
   board.reduce((a, b) => a.concat(b) as Row).every(symbol => symbol !== null)
 
+export const checkWinner = (pokemon, player) => {
+  if (pokemon.health === 0) {
+    if (player.symbol === "x") {
+      return "o"
+    } else if (player.symbol === "o") {
+      return "x"
+    }
+  }
+  return
+}
+
 export const checkMove = async (pokemonToUpdate, update) => {
   // pokemonToUpdate.health = pokemonToUpdate.health - update.payload.damage
   // if (pokemonToUpdate.health <= 0) {
@@ -68,7 +79,7 @@ export const checkMove = async (pokemonToUpdate, update) => {
     case 10:
       console.log(update.payload.damage, "10 was passed")
       hitChance = Math.random()
-      if (hitChance < 0.8) {
+      if (hitChance < 0.9) {
         console.log("HIT!")
         pokemonToUpdate.health = pokemonToUpdate.health - update.payload.damage
         if (pokemonToUpdate.health <= 0) {
@@ -85,7 +96,7 @@ export const checkMove = async (pokemonToUpdate, update) => {
     case 20:
       console.log(update.payload.damage, "20 was passed")
       hitChance = Math.random()
-      if (hitChance < 0.6) {
+      if (hitChance < 0.8) {
         console.log("HIT!")
         pokemonToUpdate.health = pokemonToUpdate.health - update.payload.damage
         if (pokemonToUpdate.health <= 0) {

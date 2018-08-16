@@ -15,7 +15,7 @@ import {
 import User from "../users/entity"
 import { Game, Player } from "./entities"
 // import { IsBoard, isValidTransition, calculateWinner, finished } from "./logic"
-import { checkMove } from "./logic"
+import { checkMove, checkWinner } from "./logic"
 // import { Validate } from "class-validator"
 import { io } from "../index"
 import Pokemon from "../entities/pokemon"
@@ -179,14 +179,32 @@ export default class GameController {
       throw new BadRequestError(`It's not your turn`)
 
     if (previousHealth === pokemon.health) {
-      console.log(previousHealth)
-      console.log(pokemon.health)
       game.hitOrMiss = "miss"
     } else {
       game.hitOrMiss = "hit"
     }
 
     game.turn = player.symbol === "x" ? "o" : "x"
+
+    // Check winner
+
+    const winner = checkWinner(pokemon, player)
+
+    console.log(winner)
+
+    if (winner) {
+      game.winner = winner
+      game.status = "finished"
+    }
+    //   if (winner) {
+    //     game.winner = winner
+    //     game.status = "finished"
+    //   } else if (finished(update.board)) {
+    //     game.status = "finished"
+    //   } else {
+    //     game.turn = player.symbol === "x" ? "o" : "x"
+    //   }
+
     await game.save()
 
     io.emit("action", {
