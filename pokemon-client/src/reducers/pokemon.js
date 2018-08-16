@@ -1,4 +1,4 @@
-import { UPDATE_POKEMON } from "../actions/pokemon"
+import { UPDATE_POKEMON, getPokemon } from "../actions/pokemon"
 
 export default (state = null, { type, payload }) => {
   switch (type) {

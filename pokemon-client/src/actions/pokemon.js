@@ -29,26 +29,19 @@ export const getPokemon = () => (dispatch, getState) => {
     .catch(err => console.error(err))
 }
 
-export const updatePokemonGame = (
-  gameId,
-  move,
-  opponentId,
-  trainer,
-  opponentPokemon
-) => (dispatch, getState) => {
+export const updatePokemonGame = (gameId, move, payload, opponentPokemonId) => (
+  dispatch,
+  getState
+) => {
   const state = getState()
   const jwt = state.currentUser.jwt
 
   if (isExpired(jwt)) return dispatch(logout())
 
-  console.log(gameId)
-  console.log(move)
-  console.log(opponentId)
-
   request
     .patch(`${baseUrl}/games/${gameId}`)
     .set("Authorization", `Bearer ${jwt}`)
-    .send({ move, opponentId, trainer, opponentPokemon })
+    .send({ move, payload, opponentPokemonId })
     .then(_ => dispatch(updateGameSuccess()))
     .catch(err => console.error(err))
 }
