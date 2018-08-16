@@ -85,6 +85,7 @@ class BattleArena extends PureComponent {
   }
 
   render() {
+    console.log(this.props)
     const { userId, game, selectMove } = this.props
     if(game.status === "started"){
     this.onPlay()
