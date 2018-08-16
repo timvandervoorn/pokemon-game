@@ -1,10 +1,6 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import { getPokemon } from "../../actions/pokemon"
-import { getTrainers } from "../../actions/trainers"
-import { userId } from "../../jwt"
-import { Redirect } from "react-router-dom"
-import { attack, item, pokemon, run } from "../../constants"
 import "./battleArena.css"
 import ToggleDisplay from "react-toggle-display"
 
@@ -67,8 +63,10 @@ class BattleArena extends PureComponent {
     game.players.forEach(player => {
       if (player.userId === userId) {
         pokemon = player.pokemon
+        Number(pokemon.health)
       } else {
         opponentPokemon = player.pokemon
+        Number(opponentPokemon.health)
       }
     })
 
@@ -80,28 +78,64 @@ class BattleArena extends PureComponent {
         <div className="battle-scene">
           <div className="box-top-left">
             {pokemon && <h2 className="pokemon">{opponentPokemon.name}</h2>}
+            <ToggleDisplay if={opponentPokemon.health < 70 && opponentPokemon.health > 30 }>
             <div className="hp-bar-top">
-              <div className="hp-bar-fill" style={{width: `${opponentPokemon.health}%`}} />
+              <div className="hp-bar-fill" style={{width: `${opponentPokemon.health}%`, background: "yellow"}} />
             </div>
+            </ToggleDisplay>
+            <ToggleDisplay if={opponentPokemon.health <= 100 && opponentPokemon.health > 70}>
+            <div className="hp-bar-top">
+              <div className="hp-bar-fill" style={{width: `${opponentPokemon.health}%`, background: "green"}} />
+            </div>
+            </ToggleDisplay>
+            <ToggleDisplay if={opponentPokemon.health <= 30}>
+            <div className="hp-bar-top">
+              <div className="hp-bar-fill" style={{width: `${opponentPokemon.health}%`, background: "red"}} />
+            </div>
+            </ToggleDisplay>
             <h4 className="level">lvl. 15</h4>
           </div>
+          <ToggleDisplay if={opponentPokemon.health !== "0"}>
           <div className="box-top-right">
             <img
               class="pokemon-top"
               src={require(`../../images/${opponentPokemon.name.toLowerCase()}.png`)}
             />
           </div>
+          </ToggleDisplay>
+          <ToggleDisplay if={opponentPokemon.health === "0"}>
+          <div className="box-top-right">
+          </div>
+          </ToggleDisplay>
+          <ToggleDisplay if={pokemon.health !== "0"}>
           <div className="box-bottom-left">
             <img
               class="pokemon-bottom"
               src={require(`../../images/${pokemon.name.toLowerCase()}.png`)}
             />
           </div>
+          </ToggleDisplay>
+          <ToggleDisplay if={pokemon.health === "0"}>
+          <div className="box-bottom-left">
+          </div>
+          </ToggleDisplay>
           <div className="box-bottom-right">
             {pokemon && <h2 className="pokemon">{pokemon.name}</h2>}
+            <ToggleDisplay if={pokemon.health < 101}>
             <div className="hp-bar-bottom">
-              <div className="hp-bar-fill" style={{width: `${pokemon.health}%`}} />
+              <div className="hp-bar-fill" style={{width: `${pokemon.health}%`, background: "green"}} />
             </div>
+            </ToggleDisplay>
+            <ToggleDisplay if={pokemon.health < 70}>
+            <div className="hp-bar-bottom">
+              <div className="hp-bar-fill" style={{width: `${pokemon.health}%`, background: "yellow"}} />
+            </div>
+            </ToggleDisplay>
+            <ToggleDisplay if={pokemon.health < 30}>
+            <div className="hp-bar-bottom">
+              <div className="hp-bar-fill" style={{width: `${pokemon.health}%`, background: "red"}} />
+            </div>
+            </ToggleDisplay>
             <h4 className="level">lvl. </h4>
             {pokemon.name && (
               <h4 className="hp">
@@ -111,17 +145,17 @@ class BattleArena extends PureComponent {
             )}
           </div>
           <div className="bottom-menu">
-          <ToggleDisplay if={pokemon.health === "0"}>
+          <ToggleDisplay if={pokemon.health === 0}>
             <div className="battle-text text-box-left">
               <h4>You've lost the battle!</h4>
             </div>
           </ToggleDisplay>
-          <ToggleDisplay if={opponentPokemon.health === "0"}>
+          <ToggleDisplay if={opponentPokemon.health === 0}>
             <div className="battle-text text-box-left">
               <h4>You've won the battle!</h4>
             </div>
           </ToggleDisplay>
-          <ToggleDisplay if={this.state.initial && pokemon.health !== "0" && opponentPokemon.health !== ""}>
+          <ToggleDisplay if={this.state.initial && pokemon.health !== 0 && opponentPokemon.health !== ""}>
             <div className="battle-text text-box-left">
               <h4>Challenge your fellow Codaisseur student and see who's the grand PokeMaster!</h4>
             </div>
@@ -141,7 +175,7 @@ class BattleArena extends PureComponent {
               <h4>Choose your item!</h4>
             </div>
           </ToggleDisplay>
-          <ToggleDisplay if={!this.state.fight2 && !this.state.initial}>
+          <ToggleDisplay if={!this.state.fight2 && !this.state.initial && pokemon.health !== 0 && opponentPokemon.health !== 0}>
             <div className="battle-text text-box-left">
               <h4>{pokemon.name} used {this.state.attack} It was a {this.props.game.hitOrMiss}!</h4>
             </div>
@@ -233,7 +267,7 @@ class BattleArena extends PureComponent {
                 {pokemon && (
                   <div>
                     <h4 className="battle-text-top-left" onClick={this.handleItem}>
-                      (1x) Potion 30HP
+                      Potion +20HP
                     </h4>
                     <h4 className="battle-text-bottom-left" onClick={this.handleItem}>
                       Revive
