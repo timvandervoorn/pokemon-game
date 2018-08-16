@@ -7,7 +7,15 @@ import ToggleDisplay from "react-toggle-display"
 class BattleArena extends PureComponent {
   constructor() {
     super()
-    this.state = { fight: true, item: true, pokemon: true, run: true, initial: true, fight2: true, attack: "" }
+    this.state = {
+      fight: true,
+      item: true,
+      pokemon: true,
+      run: true,
+      initial: true,
+      fight2: true,
+      attack: ""
+    }
   }
 
   handleClick = e => {
@@ -47,6 +55,12 @@ class BattleArena extends PureComponent {
         fight2: !this.state.fight2,
         attack: payload.name
       })
+
+      if (move === "item") {
+        this.setState({
+          item: !this.state.item
+        })
+      }
     }
 
     this.props.selectMove(move, payload, opponentPokemonId)
@@ -188,16 +202,36 @@ class BattleArena extends PureComponent {
 
             <ToggleDisplay fight={!this.state.fight}>
               <div className="text-box-right">
-                <h4 name="fight" value={!this.state.fight} className="battle-text-top-left" onClick={this.handleClick}>
+                <h4
+                  name="fight"
+                  value={!this.state.fight}
+                  className="battle-text-top-left"
+                  onClick={this.handleClick}
+                >
                   Fight
                 </h4>
-                <h4 name="item" value={!this.state.item} className="battle-text-bottom-left" onClick={this.handleClick}>
+                <h4
+                  name="item"
+                  value={!this.state.item}
+                  className="battle-text-bottom-left"
+                  onClick={this.handleClick}
+                >
                   Item
                 </h4>
-                <h4 name="pokemon" value={!this.state.pokemon}className="battle-text-top-right" onClick={this.handleClick}>
+                <h4
+                  name="pokemon"
+                  value={!this.state.pokemon}
+                  className="battle-text-top-right"
+                  onClick={this.handleClick}
+                >
                   Pokemon
                 </h4>
-                <h4 name="run" value={!this.state.run}className="battle-text-bottom-right" onClick={this.handleClick}>
+                <h4
+                  name="run"
+                  value={!this.state.run}
+                  className="battle-text-bottom-right"
+                  onClick={this.handleClick}
+                >
                   Run
                 </h4>
               </div>
@@ -269,10 +303,16 @@ class BattleArena extends PureComponent {
                     <h4 className="battle-text-top-left" onClick={this.handleItem}>
                       Potion +20HP
                     </h4>
-                    <h4 className="battle-text-bottom-left" onClick={this.handleItem}>
+                    <h4
+                      className="battle-text-bottom-left"
+                      onClick={this.handleItem}
+                    >
                       Revive
                     </h4>
-                    <h4 className="battle-text-top-right" onClick={this.handleItem}>
+                    <h4
+                      className="battle-text-top-right"
+                      onClick={this.handleItem}
+                    >
                       Codaisseur coffee
                     </h4>
                   </div>
@@ -283,10 +323,16 @@ class BattleArena extends PureComponent {
               <div className="text-box-right">
                 {pokemon && (
                   <div>
-                    <h4 className="battle-text-top-left" onClick={this.handlePokemon}>
+                    <h4
+                      className="battle-text-top-left"
+                      onClick={this.handlePokemon}
+                    >
                       Choose your pokemon!
                     </h4>
-                    <h4 className="battle-text-bottom-left" onClick={this.handlePokemon}>
+                    <h4
+                      className="battle-text-bottom-left"
+                      onClick={this.handlePokemon}
+                    >
                       Blastoise
                     </h4>
                   </div>
@@ -297,7 +343,10 @@ class BattleArena extends PureComponent {
               <div className="text-box-right">
                 {pokemon && (
                   <div>
-                    <h4 className="battle-text-top-left" onClick={this.handleRun}>
+                    <h4
+                      className="battle-text-top-left"
+                      onClick={this.handleRun}
+                    >
                       Back to battle!
                     </h4>
                   </div>
@@ -311,9 +360,7 @@ class BattleArena extends PureComponent {
   }
 }
 
-const mapStateToProps = state => {
-
-}
+const mapStateToProps = state => {}
 
 const mapDispatchToProps = {
   getPokemon
