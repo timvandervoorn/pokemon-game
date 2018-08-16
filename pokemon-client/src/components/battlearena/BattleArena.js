@@ -3,6 +3,8 @@ import { connect } from "react-redux"
 import { getPokemon } from "../../actions/pokemon"
 import "./battleArena.css"
 import ToggleDisplay from "react-toggle-display"
+import startBattleAudio from '../../audio/115-battlevstrainer.mp3'
+import winnerAudio from '../../audio/116-victoryvstrainer.mp3'
 
 class BattleArena extends PureComponent {
   constructor() {
@@ -17,6 +19,22 @@ class BattleArena extends PureComponent {
       attack: ""
     }
   }
+
+
+  sound = new Audio(startBattleAudio)
+  soundWinner = new Audio(winnerAudio)
+
+ onPlay(){
+   this.sound.play();
+ }
+
+ onPause(){
+  this.sound.pause();
+}
+
+ onWinner(){
+   this.soundWinner.play()
+ }
 
   handleClick = e => {
     const test = Object.values(e.target)
@@ -68,6 +86,14 @@ class BattleArena extends PureComponent {
 
   render() {
     const { userId, game, selectMove } = this.props
+    if(game.status === "started"){
+    this.onPlay()
+    }
+
+    if(game.status === "finished"){
+      this.onPause()
+      this.onWinner()
+    }
 
     if (game === null) return "Loading..."
 
