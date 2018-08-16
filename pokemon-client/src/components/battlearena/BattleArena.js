@@ -11,7 +11,7 @@ import ToggleDisplay from "react-toggle-display"
 class BattleArena extends PureComponent {
   constructor() {
     super()
-    this.state = { fight: true, item: true, pokemon: true, run: true, initial: true, fight2: false }
+    this.state = { fight: true, item: true, pokemon: true, run: true, initial: true, fight2: true, attack: "" }
   }
 
   handleClick = e => {
@@ -20,7 +20,8 @@ class BattleArena extends PureComponent {
     const value = test[1].value
     this.setState({
       [name]: value,
-      initial: false
+      initial: false,
+      fight2: true
     })
   }
 
@@ -43,10 +44,12 @@ class BattleArena extends PureComponent {
   }
 
   handleMove = (move, payload, opponentPokemonId) => {
+    console.log(payload)
     if (move === "attack") {
       this.setState({
         fight: !this.state.fight,
-        fight2: this.state.fight2
+        fight2: !this.state.fight2,
+        attack: payload.name
       })
     }
 
@@ -68,8 +71,6 @@ class BattleArena extends PureComponent {
         opponentPokemon = player.pokemon
       }
     })
-
-    console.log(opponentPokemon.health)
 
     return (
       <div>
@@ -140,9 +141,9 @@ class BattleArena extends PureComponent {
               <h4>Choose your item!</h4>
             </div>
           </ToggleDisplay>
-          <ToggleDisplay if={this.state.fight2 && !this.state.initial}>
+          <ToggleDisplay if={!this.state.fight2 && !this.state.initial}>
             <div className="battle-text text-box-left">
-              <h4>{pokemon.name} used {pokemon.attacks[0].name} It was a {this.props.game.hitOrMiss}!</h4>
+              <h4>{pokemon.name} used {this.state.attack} It was a {this.props.game.hitOrMiss}!</h4>
             </div>
           </ToggleDisplay>
           <ToggleDisplay if={!this.state.fight}>
@@ -173,6 +174,7 @@ class BattleArena extends PureComponent {
                   <div>
                     <h4
                       className="battle-text-top-left"
+                      name={pokemon.attacks[0]}
                       onClick={() =>
                         this.handleMove(
                           "attack",
@@ -185,6 +187,7 @@ class BattleArena extends PureComponent {
                     </h4>
                     <h4
                       className="battle-text-bottom-left"
+                      name={pokemon.attacks[1]}
                       onClick={() =>
                         this.handleMove(
                           "attack",
@@ -197,6 +200,7 @@ class BattleArena extends PureComponent {
                     </h4>
                     <h4
                       className="battle-text-top-right"
+                      name={pokemon.attacks[2]}
                       onClick={() =>
                         this.handleMove(
                           "attack",
@@ -209,6 +213,7 @@ class BattleArena extends PureComponent {
                     </h4>
                     <h4
                       className="battle-text-bottom-right"
+                      name={pokemon.attacks[3]}
                       onClick={() =>
                         this.handleMove(
                           "attack",
@@ -272,7 +277,9 @@ class BattleArena extends PureComponent {
   }
 }
 
-const mapStateToProps = state => {}
+const mapStateToProps = state => {
+
+}
 
 const mapDispatchToProps = {
   getPokemon
