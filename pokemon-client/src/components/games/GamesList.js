@@ -18,6 +18,10 @@ class GamesList extends PureComponent {
    this.sound.play();
  }
 
+ onPause(){
+   this.sound.pause()
+ }
+
 
   componentWillMount() {
     if (this.props.authenticated) {
@@ -25,6 +29,14 @@ class GamesList extends PureComponent {
       if (this.props.users === null) this.props.getUsers()
       
     }
+  }
+
+  componentDidMount() {
+    this.onPlay()
+  }
+
+  componentWillUnmount(){
+    this.onPause()
   }
 
   renderGame = (game) => {
@@ -59,7 +71,6 @@ class GamesList extends PureComponent {
   }
 
   render() {
-    this.onPlay()
     const {games, users, authenticated, createGame} = this.props
 
     if (!authenticated) return (
