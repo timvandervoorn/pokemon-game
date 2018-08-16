@@ -69,13 +69,13 @@ class BattleArena extends PureComponent {
           <div class="box-top-right">
             <img
               class="pokemon-top"
-              src={require("../../images/charmander.png")}
+              src={require(`../../images/${opponentPokemon.name.toLowerCase()}.png`)}
             />
           </div>
           <div class="box-bottom-left">
             <img
               class="pokemon-bottom"
-              src={require("../../images/bulbasaur.png")}
+              src={require(`../../images/${pokemon.name.toLowerCase()}.png`)}
             />
           </div>
           <div class="box-bottom-right">

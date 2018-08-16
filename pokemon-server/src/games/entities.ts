@@ -16,6 +16,8 @@ export type Board = [Row, Row, Row]
 
 type Status = "pending" | "started" | "finished"
 
+type HitOrMIs = "hit" | "miss"
+
 const emptyRow: Row = [null, null, null]
 const emptyBoard: Board = [emptyRow, emptyRow, emptyRow]
 
@@ -35,6 +37,9 @@ export class Game extends BaseEntity {
 
   @Column("text", { default: "pending" })
   status: Status
+
+  @Column("text", { nullable: true })
+  hitOrMiss: HitOrMIs
 
   // this is a relation, read more about them here:
   // http://typeorm.io/#/many-to-one-one-to-many-relations
