@@ -14,34 +14,12 @@ class BattleArena extends PureComponent {
     this.state = { fight: true, item: true, pokemon: true, run: true }
   }
 
-  handleClickFight = () => {
+  handleClick = e => {
+    const test = Object.values(e.target)
+    const name = test[1].name
+    const value = test[1].value
     this.setState({
-      fight: !this.state.fight
-    })
-  }
-
-  handleClickItem = () => {
-    this.setState({
-      item: !this.state.item
-    })
-  }
-
-  handleClickPokemon = () => {
-    this.setState({
-      pokemon: !this.state.pokemon
-    })
-  }
-
-  handleClickRun = () => {
-    this.setState({
-      run: !this.state.run
-    })
-  }
-
-  handleAttack = e => {
-    e.preventDefault()
-    this.setState({
-      fight: !this.state.fight
+      [name]: value
     })
   }
 
@@ -63,96 +41,153 @@ class BattleArena extends PureComponent {
     })
   }
 
-  handleMove = (move, type, userId, trainers, opponentPokemon) => {
-    this.props.selectMove(move, type, userId, trainers, opponentPokemon)
+  handleMove = (move, payload, opponentPokemonId) => {
+    if (move === "attack") {
+      this.setState({
+        fight: !this.state.fight
+      })
+    }
+
+    this.props.selectMove(move, payload, opponentPokemonId)
   }
 
   render() {
-    const { trainers, players, userId, battlearena, game } = this.props
+    const { userId, game, selectMove } = this.props
 
     if (game === null) return "Loading..."
 
     let pokemon
     let opponentPokemon
 
-    if (userId === 1) {
-      pokemon = game.players[0].pokemon
-      opponentPokemon = game.players[1].pokemon
-    }
-
-    if (userId === 2) {
-      pokemon = game.players[1].pokemon
-      opponentPokemon = game.players[0].pokemon
-    }
+    game.players.forEach(player => {
+      if (player.userId === userId) {
+        pokemon = player.pokemon
+      } else {
+        opponentPokemon = player.pokemon
+      }
+    })
 
     return (
       <div>
+        {!pokemon && "Loading"}
         <h1>BattleArena is rendered</h1>
-        <div class="battle-scene">
-          <div class="box-top-left">
-            {pokemon && <h2 class="pokemon">{opponentPokemon.name}</h2>}
-            <div class="hp-bar-top">
-              <div class="hp-bar-fill" />
+
+        <div className="battle-scene">
+          <div className="box-top-left">
+            {pokemon && <h2 className="pokemon">{opponentPokemon.name}</h2>}
+            <div className="hp-bar-top">
+              <div className="hp-bar-fill" />
             </div>
-            <h4 class="level">lvl. 15</h4>
+            <h4 className="level">lvl. 15</h4>
           </div>
-          <div class="box-top-right">
+          <div className="box-top-right">
             <img
-              class="pokemon-top"
+              className="pokemon-top"
               src={require("../../images/charmander.png")}
             />
           </div>
-          <div class="box-bottom-left">
+          <div className="box-bottom-left">
             <img
-              class="pokemon-bottom"
+              className="pokemon-bottom"
               src={require("../../images/bulbasaur.png")}
             />
           </div>
-          <div class="box-bottom-right">
-            {pokemon && <h2 class="pokemon">{pokemon.name}</h2>}
-            <div class="hp-bar-bottom">
-              <div class="hp-bar-fill" />
+          <div className="box-bottom-right">
+            {pokemon && <h2 className="pokemon">{pokemon.name}</h2>}
+            <div className="hp-bar-bottom">
+              <div className="hp-bar-fill" />
             </div>
-            <h4 class="level">lvl. </h4>
+            <h4 className="level">lvl. </h4>
             {pokemon.name && (
-              <h4 class="hp">
+              <h4 className="hp">
                 {pokemon.health}
                 /100 hp
               </h4>
             )}
           </div>
-          <div class="bottom-menu">
-            <div class="battle-text text-box-left" />
-            <ToggleDisplay fight={this.state.fight}>
-              <div class="text-box-right">
-                <h4 class="battle-text-top-left" onClick={this.handleClickFight}>
+          <div className="bottom-menu">
+          <ToggleDisplay if={!this.state.run}>
+            <div className="battle-text text-box-left">
+              <h4>Oh noes! You're unable to run! Fight till you faint!</h4>
+            </div>
+          </ToggleDisplay>
+          <ToggleDisplay if={!this.state.pokemon}>
+            <div className="battle-text text-box-left">
+              <h4>You dont have any pokemon left!</h4>
+            </div>
+          </ToggleDisplay>
+          <ToggleDisplay if={!this.state.item}>
+            <div className="battle-text1 text-box-left">
+              <h4 style={{transition:  "max-width 1s linear", maxWidth: "100%"}}>Choose your item!</h4>
+            </div>
+          </ToggleDisplay>
+
+            <ToggleDisplay fight={!this.state.fight}>
+              <div className="text-box-right">
+                <h4 name="fight" value={!this.state.fight} className="battle-text-top-left" onClick={this.handleClick}>
                   Fight
                 </h4>
-                <h4 class="battle-text-bottom-left" onClick={this.handleClickItem}>
+                <h4 name="item" value={!this.state.item} className="battle-text-bottom-left" onClick={this.handleClick}>
                   Item
                 </h4>
-                <h4 class="battle-text-top-right" onClick={this.handleClickPokemon}>
+                <h4 name="pokemon" value={!this.state.pokemon}className="battle-text-top-right" onClick={this.handleClick}>
                   Pokemon
                 </h4>
-                <h4 class="battle-text-bottom-right" onClick={this.handleClickRun}>
+                <h4 name="run" value={!this.state.run}className="battle-text-bottom-right" onClick={this.handleClick}>
                   Run
                 </h4>
               </div>
             </ToggleDisplay>
             <ToggleDisplay if={!this.state.fight}>
-              <div class="text-box-right">
+              <div className="text-box-right">
                 {pokemon && (
                   <div>
-                    <h4 class="battle-text-top-left" onClick={this.handleAttack}>
+                    <h4
+                      className="battle-text-top-left"
+                      onClick={() =>
+                        this.handleMove(
+                          "attack",
+                          pokemon.attacks[0],
+                          opponentPokemon.id
+                        )
+                      }
+                    >
                       {pokemon.attacks[0].name}
                     </h4>
-                    <h4 class="battle-text-bottom-left" onClick={this.handleAttack}>
+                    <h4
+                      className="battle-text-bottom-left"
+                      onClick={() =>
+                        this.handleMove(
+                          "attack",
+                          pokemon.attacks[1],
+                          opponentPokemon.id
+                        )
+                      }
+                    >
                       {pokemon.attacks[1].name}
                     </h4>
-                    <h4 class="battle-text-top-right" onClick={this.handleAttack}>
+                    <h4
+                      className="battle-text-top-right"
+                      onClick={() =>
+                        this.handleMove(
+                          "attack",
+                          pokemon.attacks[2],
+                          opponentPokemon.id
+                        )
+                      }
+                    >
                       {pokemon.attacks[2].name}
                     </h4>
-                    <h4 class="battle-text-bottom-right" onClick={this.handleAttack}>
+                    <h4
+                      className="battle-text-bottom-right"
+                      onClick={() =>
+                        this.handleMove(
+                          "attack",
+                          pokemon.attacks[3],
+                          opponentPokemon.id
+                        )
+                      }
+                    >
                       {pokemon.attacks[3].name}
                     </h4>
                   </div>
@@ -160,16 +195,16 @@ class BattleArena extends PureComponent {
               </div>
             </ToggleDisplay>
             <ToggleDisplay if={!this.state.item}>
-              <div class="text-box-right">
+              <div className="text-box-right">
                 {pokemon && (
                   <div>
-                    <h4 class="battle-text-top-left" onClick={this.handleItem}>
+                    <h4 className="battle-text-top-left" onClick={this.handleItem}>
                       (1x) Potion 30HP
                     </h4>
-                    <h4 class="battle-text-bottom-left" onClick={this.handleItem}>
+                    <h4 className="battle-text-bottom-left" onClick={this.handleItem}>
                       Revive
                     </h4>
-                    <h4 class="battle-text-top-right" onClick={this.handleItem}>
+                    <h4 className="battle-text-top-right" onClick={this.handleItem}>
                       Codaisseur coffee
                     </h4>
                   </div>
@@ -177,13 +212,13 @@ class BattleArena extends PureComponent {
               </div>
             </ToggleDisplay>
             <ToggleDisplay if={!this.state.pokemon}>
-              <div class="text-box-right">
+              <div className="text-box-right">
                 {pokemon && (
                   <div>
-                    <h4 class="battle-text-top-left" onClick={this.handlePokemon}>
+                    <h4 className="battle-text-top-left" onClick={this.handlePokemon}>
                       Choose your pokemon!
                     </h4>
-                    <h4 class="battle-text-bottom-left" onClick={this.handlePokemon}>
+                    <h4 className="battle-text-bottom-left" onClick={this.handlePokemon}>
                       Blastoise
                     </h4>
                   </div>
@@ -191,11 +226,11 @@ class BattleArena extends PureComponent {
               </div>
             </ToggleDisplay>
             <ToggleDisplay if={!this.state.run}>
-              <div class="text-box-right">
+              <div className="text-box-right">
                 {pokemon && (
                   <div>
-                    <h4 class="battle-text-top-left" onClick={this.handleRun}>
-                      Oh noes! Can't run away! Keep fighting!
+                    <h4 className="battle-text-top-left" onClick={this.handleRun}>
+                      Back to battle!
                     </h4>
                   </div>
                 )}
@@ -208,9 +243,11 @@ class BattleArena extends PureComponent {
   }
 }
 
-const mapStateToProps = () => {}
+const mapStateToProps = state => {}
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  getPokemon
+}
 
 export default connect(
   mapStateToProps,
