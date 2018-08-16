@@ -16,6 +16,7 @@ import User from "../users/entity"
 import { Game, Player } from "./entities"
 // import { IsBoard, isValidTransition, calculateWinner, finished } from "./logic"
 import { checkMove, checkWinner } from "./logic"
+import { generatePokemon } from "../lib/constants"
 // import { Validate } from "class-validator"
 import { io } from "../index"
 import Pokemon from "../entities/pokemon"
@@ -44,16 +45,16 @@ export default class GameController {
   async createGame(@CurrentUser() user: User) {
     const entity = await Game.create().save()
 
-    // const pokemon = await Pokemon.create({
-    //   name: "Bulbasaur",
-    //   type: "grass",
-    //   health: 100,
-    //   attacks: [],
-    //   imagePokemon: "bla"
-    // }).save()
-    const pokemon = await Pokemon.findOneById(1)
+    const randomPokemon = generatePokemon()
 
-    console.log(pokemon)
+    const pokemon = await Pokemon.create({
+      name: randomPokemon.name,
+      type: randomPokemon.type,
+      attacks: randomPokemon.attacks
+    }).save()
+
+    // const pokemon = await Pokemon.findOneById(1)
+
     await Player.create({
       game: entity,
       user,
@@ -85,7 +86,15 @@ export default class GameController {
     game.status = "started"
     await game.save()
 
-    const pokemon = await Pokemon.findOneById(2)
+    const randomPokemon = generatePokemon()
+
+    const pokemon = await Pokemon.create({
+      name: randomPokemon.name,
+      type: randomPokemon.type,
+      attacks: randomPokemon.attacks
+    }).save()
+
+    // const pokemon = await Pokemon.findOneById(2)
 
     const player = await Player.create({
       game,
