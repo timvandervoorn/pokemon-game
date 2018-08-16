@@ -187,14 +187,22 @@
   
 }
 
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
 .battle-text{
   margin-top: 3%;
   margin-left: 5%;
   opacity: 0.95;
   font-size: 18px;
   color: white;
+  overflow: hidden;
   text-align: left;
+  white-space: nowrap;
   font-family: "PT Sans Narrow";
+  animation: typing 3.5s steps(40, end);
 }
 
 .battle-text-top-left{

@@ -13,8 +13,9 @@ import {
   Patch
 } from "routing-controllers"
 import User from "../users/entity"
-import { Game, Player, Board } from "./entities"
+import { Game, Player } from "./entities"
 // import { IsBoard, isValidTransition, calculateWinner, finished } from "./logic"
+import { checkMove } from "./logic"
 // import { Validate } from "class-validator"
 import { io } from "../index"
 import Pokemon from "../entities/pokemon"
@@ -159,12 +160,14 @@ export default class GameController {
       throw new NotFoundError(`Can't find pokemon!`)
     }
 
-    if (pokemonToUpdate) {
-      pokemonToUpdate.health = pokemonToUpdate.health - update.payload.damage
-      await pokemonToUpdate.save()
-    }
+    const previousHealth = pokemonToUpdate.health
+
+    const pokemon = await checkMove(pokemonToUpdate, update)
+
+    await pokemon.save()
 
     const game = await Game.findOneById(gameId)
+
     if (!game) throw new NotFoundError(`Game does not exist`)
 
     const player = await Player.findOne({ user, game })
@@ -174,6 +177,14 @@ export default class GameController {
       throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn)
       throw new BadRequestError(`It's not your turn`)
+
+    if (previousHealth === pokemon.health) {
+      console.log(previousHealth)
+      console.log(pokemon.health)
+      game.hitOrMiss = "miss"
+    } else {
+      game.hitOrMiss = "hit"
+    }
 
     game.turn = player.symbol === "x" ? "o" : "x"
     await game.save()

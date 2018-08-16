@@ -11,7 +11,7 @@ import ToggleDisplay from "react-toggle-display"
 class BattleArena extends PureComponent {
   constructor() {
     super()
-    this.state = { fight: true, item: true, pokemon: true, run: true }
+    this.state = { fight: true, item: true, pokemon: true, run: true, initial: true }
   }
 
   handleClick = e => {
@@ -82,14 +82,14 @@ class BattleArena extends PureComponent {
           </div>
           <div className="box-top-right">
             <img
-              className="pokemon-top"
-              src={require("../../images/charmander.png")}
+              class="pokemon-top"
+              src={require(`../../images/${opponentPokemon.name.toLowerCase()}.png`)}
             />
           </div>
           <div className="box-bottom-left">
             <img
-              className="pokemon-bottom"
-              src={require("../../images/bulbasaur.png")}
+              class="pokemon-bottom"
+              src={require(`../../images/${pokemon.name.toLowerCase()}.png`)}
             />
           </div>
           <div className="box-bottom-right">
@@ -106,7 +106,7 @@ class BattleArena extends PureComponent {
             )}
           </div>
           <div className="bottom-menu">
-          <ToggleDisplay if={!this.state.run}>
+          <ToggleDisplay if={!this.state.run && this.state.initial}>
             <div className="battle-text text-box-left">
               <h4>Oh noes! You're unable to run! Fight till you faint!</h4>
             </div>
@@ -117,8 +117,13 @@ class BattleArena extends PureComponent {
             </div>
           </ToggleDisplay>
           <ToggleDisplay if={!this.state.item}>
-            <div className="battle-text1 text-box-left">
-              <h4 style={{transition:  "max-width 1s linear", maxWidth: "100%"}}>Choose your item!</h4>
+            <div className="battle-text text-box-left">
+              <h4>Choose your item!</h4>
+            </div>
+          </ToggleDisplay>
+          <ToggleDisplay if={!this.state.fight}>
+            <div className="battle-text text-box-left">
+              <h4>{pokemon.name} used {pokemon.attacks[0].name} It was a {this.props.game.hitOrMiss}!</h4>
             </div>
           </ToggleDisplay>
 
