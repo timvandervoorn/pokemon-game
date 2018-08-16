@@ -12,7 +12,7 @@ import Trainer from "./trainer"
 @Entity()
 export default class Pokemon extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id?: number
+  id: number
 
   @Column("text")
   name: string
@@ -24,7 +24,7 @@ export default class Pokemon extends BaseEntity {
   health: number = 100
 
   @Column("json")
-  attacks: string[]
+  attacks: {}
 
   @Column("text")
   imagePokemon: string = `../images/${this.name}.png`
