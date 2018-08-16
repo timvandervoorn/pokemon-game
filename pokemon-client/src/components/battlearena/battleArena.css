@@ -61,7 +61,6 @@
   position: absolute;
   height: 100%;
   border-radius: 20px;
-  width: 80%;
   background: red;
 }
 
@@ -202,7 +201,7 @@
   text-align: left;
   white-space: nowrap;
   font-family: "PT Sans Narrow";
-  animation: typing 3.5s steps(40, end);
+  animation: typing 4.0s steps(40, end);
 }
 
 .battle-text-top-left{
