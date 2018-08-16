@@ -22,6 +22,10 @@ class GameDetails extends PureComponent {
     }
   }
 
+  // componentDidUpdate() {
+  //   this.props.getPokemon()
+  // }
+
   joinGame = () => this.props.joinGame(this.props.game.id)
 
   makeMove = (toRow, toCell) => {
@@ -36,33 +40,25 @@ class GameDetails extends PureComponent {
     updateGame(game.id, board)
   }
 
-  selectMove = (move, type, userId, opponentTrainer, opponentPokemon) => {
-    const { game, updatePokemonGame } = this.props
+  selectMove = (move, payload, opponentPokemonId) => {
+    const { game, updatePokemonGame, users } = this.props
 
-    switch (type) {
+    switch (move) {
       case attack:
-        console.log("case attack")
-        console.log(move.name)
-        console.log(move.damage)
-        console.log(userId)
-        console.log(opponentPokemon)
+        // const currentUsers = Object.values(users)
 
-        const currentUsers = Object.values(this.props.users)
+        // function findOpponent(users) {
+        //   return users.id !== userId
+        // }
 
-        function findOpponent(users) {
-          return users.id !== userId
-        }
-
-        console.log(currentUsers)
-        const opponent = currentUsers.find(findOpponent)
-        console.log(opponent)
+        // const opponent = currentUsers.find(findOpponent)
 
         updatePokemonGame(
           game.id,
           move,
-          opponent.id,
-          opponentTrainer,
-          opponentPokemon
+          payload,
+          // opponent.id,
+          opponentPokemonId
         )
 
         break
@@ -119,12 +115,10 @@ class GameDetails extends PureComponent {
 
         {game.status !== "pending" && (
           <BattleArena
-            // pokemon={pokemon}
-            // trainers={trainers}
             userId={userId}
             selectMove={this.selectMove}
-            // player={player}
             game={game}
+            allPokemon={pokemon}
           />
         )}
       </Paper>

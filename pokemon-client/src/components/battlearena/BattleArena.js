@@ -21,49 +21,43 @@ class BattleArena extends PureComponent {
     })
   }
 
-  handleAttack = e => {
-    e.preventDefault()
+  handleAttack = () => {
     this.setState({
       show: !this.state.show
     })
   }
 
-  handleMove = (move, type, userId, trainers, opponentPokemon) => {
-    this.props.selectMove(move, type, userId, trainers, opponentPokemon)
+  handleMove = (move, payload, opponentPokemonId) => {
+    if (move === "attack") {
+      this.setState({
+        show: !this.state.show
+      })
+    }
+
+    this.props.selectMove(move, payload, opponentPokemonId)
   }
 
   render() {
-    const { trainers, players, userId, battlearena, game } = this.props
+    const { userId, game, selectMove } = this.props
 
     if (game === null) return "Loading..."
 
-    // let trainer
-    // let opponentTrainer
     let pokemon
     let opponentPokemon
 
-    if (userId === 1) {
-      pokemon = game.players[0].pokemon
-      opponentPokemon = game.players[1].pokemon
-    }
-
-    if (userId === 2) {
-      pokemon = game.players[1].pokemon
-      opponentPokemon = game.players[0].pokemon
-    }
-
-    // if (userId === 2) {
-    //   trainer = battlearena[1]
-    //   opponentTrainer = battlearena[0]
-    // }
-    {
-      console.log(this.props)
-      console.log(pokemon)
-    }
+    game.players.forEach(player => {
+      if (player.userId === userId) {
+        pokemon = player.pokemon
+      } else {
+        opponentPokemon = player.pokemon
+      }
+    })
 
     return (
       <div>
+        {!pokemon && "Loading"}
         <h1>BattleArena is rendered</h1>
+
         <div class="battle-scene">
           <div class="box-top-left">
             {pokemon && <h2 class="pokemon">{opponentPokemon.name}</h2>}
@@ -121,25 +115,49 @@ class BattleArena extends PureComponent {
                   <div>
                     <h4
                       class="battle-text-top-left"
-                      onClick={this.handleAttack}
+                      onClick={() =>
+                        this.handleMove(
+                          "attack",
+                          pokemon.attacks[0],
+                          opponentPokemon.id
+                        )
+                      }
                     >
                       {pokemon.attacks[0].name}
                     </h4>
                     <h4
                       class="battle-text-bottom-left"
-                      onClick={this.handleAttack}
+                      onClick={() =>
+                        this.handleMove(
+                          "attack",
+                          pokemon.attacks[1],
+                          opponentPokemon.id
+                        )
+                      }
                     >
                       {pokemon.attacks[1].name}
                     </h4>
                     <h4
                       class="battle-text-top-right"
-                      onClick={this.handleAttack}
+                      onClick={() =>
+                        this.handleMove(
+                          "attack",
+                          pokemon.attacks[2],
+                          opponentPokemon.id
+                        )
+                      }
                     >
                       {pokemon.attacks[2].name}
                     </h4>
                     <h4
                       class="battle-text-bottom-right"
-                      onClick={this.handleAttack}
+                      onClick={() =>
+                        this.handleMove(
+                          "attack",
+                          pokemon.attacks[3],
+                          opponentPokemon.id
+                        )
+                      }
                     >
                       {pokemon.attacks[3].name}
                     </h4>
@@ -148,7 +166,6 @@ class BattleArena extends PureComponent {
               </div>
             </ToggleDisplay>
           </div>
-          Bla
         </div>
 
         {/* {console.log(this.props.battlearena)}
@@ -225,9 +242,11 @@ class BattleArena extends PureComponent {
   }
 }
 
-const mapStateToProps = () => {}
+const mapStateToProps = state => {}
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  getPokemon
+}
 
 export default connect(
   mapStateToProps,
