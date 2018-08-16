@@ -61,6 +61,7 @@
   position: absolute;
   height: 100%;
   border-radius: 20px;
+  width: 80%;
   background: red;
 }
 

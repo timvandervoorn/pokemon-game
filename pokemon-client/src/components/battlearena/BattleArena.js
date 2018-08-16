@@ -11,20 +11,55 @@ import ToggleDisplay from "react-toggle-display"
 class BattleArena extends PureComponent {
   constructor() {
     super()
-    this.state = { show: true }
+    this.state = { fight: true, item: true, pokemon: true, run: true }
   }
 
-  handleClick = e => {
-    e.preventDefault()
+  handleClickFight = () => {
     this.setState({
-      show: !this.state.show
+      fight: !this.state.fight
+    })
+  }
+
+  handleClickItem = () => {
+    this.setState({
+      item: !this.state.item
+    })
+  }
+
+  handleClickPokemon = () => {
+    this.setState({
+      pokemon: !this.state.pokemon
+    })
+  }
+
+  handleClickRun = () => {
+    this.setState({
+      run: !this.state.run
     })
   }
 
   handleAttack = e => {
     e.preventDefault()
     this.setState({
-      show: !this.state.show
+      fight: !this.state.fight
+    })
+  }
+
+  handleItem = () => {
+    this.setState({
+      item: !this.state.item
+    })
+  }
+
+  handlePokemon = () => {
+    this.setState({
+      pokemon: !this.state.pokemon
+    })
+  }
+
+  handleRun = () => {
+    this.setState({
+      run: !this.state.run
     })
   }
 
@@ -37,8 +72,6 @@ class BattleArena extends PureComponent {
 
     if (game === null) return "Loading..."
 
-    // let trainer
-    // let opponentTrainer
     let pokemon
     let opponentPokemon
 
@@ -50,15 +83,6 @@ class BattleArena extends PureComponent {
     if (userId === 2) {
       pokemon = game.players[1].pokemon
       opponentPokemon = game.players[0].pokemon
-    }
-
-    // if (userId === 2) {
-    //   trainer = battlearena[1]
-    //   opponentTrainer = battlearena[0]
-    // }
-    {
-      console.log(this.props)
-      console.log(pokemon)
     }
 
     return (
@@ -99,127 +123,86 @@ class BattleArena extends PureComponent {
           </div>
           <div class="bottom-menu">
             <div class="battle-text text-box-left" />
-            <ToggleDisplay show={this.state.show}>
+            <ToggleDisplay fight={this.state.fight}>
               <div class="text-box-right">
-                <h4 class="battle-text-top-left" onClick={this.handleClick}>
+                <h4 class="battle-text-top-left" onClick={this.handleClickFight}>
                   Fight
                 </h4>
-                <h4 class="battle-text-bottom-left" onClick={this.handleClick}>
+                <h4 class="battle-text-bottom-left" onClick={this.handleClickItem}>
                   Item
                 </h4>
-                <h4 class="battle-text-top-right" onClick={this.handleClick}>
+                <h4 class="battle-text-top-right" onClick={this.handleClickPokemon}>
                   Pokemon
                 </h4>
-                <h4 class="battle-text-bottom-right" onClick={this.handleClick}>
+                <h4 class="battle-text-bottom-right" onClick={this.handleClickRun}>
                   Run
                 </h4>
               </div>
             </ToggleDisplay>
-            <ToggleDisplay if={!this.state.show}>
+            <ToggleDisplay if={!this.state.fight}>
               <div class="text-box-right">
                 {pokemon && (
                   <div>
-                    <h4
-                      class="battle-text-top-left"
-                      onClick={this.handleAttack}
-                    >
+                    <h4 class="battle-text-top-left" onClick={this.handleAttack}>
                       {pokemon.attacks[0].name}
                     </h4>
-                    <h4
-                      class="battle-text-bottom-left"
-                      onClick={this.handleAttack}
-                    >
+                    <h4 class="battle-text-bottom-left" onClick={this.handleAttack}>
                       {pokemon.attacks[1].name}
                     </h4>
-                    <h4
-                      class="battle-text-top-right"
-                      onClick={this.handleAttack}
-                    >
+                    <h4 class="battle-text-top-right" onClick={this.handleAttack}>
                       {pokemon.attacks[2].name}
                     </h4>
-                    <h4
-                      class="battle-text-bottom-right"
-                      onClick={this.handleAttack}
-                    >
+                    <h4 class="battle-text-bottom-right" onClick={this.handleAttack}>
                       {pokemon.attacks[3].name}
                     </h4>
                   </div>
                 )}
               </div>
             </ToggleDisplay>
+            <ToggleDisplay if={!this.state.item}>
+              <div class="text-box-right">
+                {pokemon && (
+                  <div>
+                    <h4 class="battle-text-top-left" onClick={this.handleItem}>
+                      (1x) Potion 30HP
+                    </h4>
+                    <h4 class="battle-text-bottom-left" onClick={this.handleItem}>
+                      Revive
+                    </h4>
+                    <h4 class="battle-text-top-right" onClick={this.handleItem}>
+                      Codaisseur coffee
+                    </h4>
+                  </div>
+                )}
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay if={!this.state.pokemon}>
+              <div class="text-box-right">
+                {pokemon && (
+                  <div>
+                    <h4 class="battle-text-top-left" onClick={this.handlePokemon}>
+                      Choose your pokemon!
+                    </h4>
+                    <h4 class="battle-text-bottom-left" onClick={this.handlePokemon}>
+                      Blastoise
+                    </h4>
+                  </div>
+                )}
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay if={!this.state.run}>
+              <div class="text-box-right">
+                {pokemon && (
+                  <div>
+                    <h4 class="battle-text-top-left" onClick={this.handleRun}>
+                      Oh noes! Can't run away! Keep fighting!
+                    </h4>
+                  </div>
+                )}
+              </div>
+            </ToggleDisplay>
           </div>
-          Bla
         </div>
-
-        {/* {console.log(this.props.battlearena)}
-
-        <div>
-          {this.props.trainers && (
-            <div>
-              <p>User id: {userId}</p>
-              <p>Current pokemon: {trainer.pokemons[0].name}</p>
-              <p>Health: {trainer.pokemons[0].health}</p>
-              <p>Attacks</p>
-              <ul>
-                {trainer.pokemons[0].attacks.map(pokeAttack => {
-                  return (
-                    <li key={pokeAttack.name}>
-                      <button
-                        onClick={() =>
-                          this.handleClick(
-                            pokeAttack,
-                            attack,
-                            userId,
-                            opponentTrainer,
-                            opponentTrainer.pokemons[0]
-                          )
-                        }
-                      >
-                        {pokeAttack.name}
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-              <p>
-                Pokemon on the bench:
-                {trainer.pokemons[1].name}, {trainer.pokemons[2].name},
-              </p>
-            </div>
-          )}
-        </div> */}
-
-        {/* <div>
-          {this.props.pokemon && (
-            <div>
-              <p>User id: {this.props.userId}</p>
-              <p>Pokemon 1: {this.props.pokemon[0].name}</p>
-              <ul>
-                {this.props.pokemon[0].attacks.map(pokeAttack => {
-                  return (
-                    <li key={pokeAttack.name}>
-                      <button
-                        onClick={() => this.handleClick(pokeAttack, attack)}
-                      >
-                        {pokeAttack.name}
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-              <p>Pokemon 2: {this.props.pokemon[1].name}</p>
-              <ul>
-                {this.props.pokemon[1].attacks.map(attack => {
-                  return (
-                    <li key={attack.name}>
-                      <button>{attack.name}</button>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          )}
-        </div> */}
       </div>
     )
   }
