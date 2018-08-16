@@ -37,7 +37,7 @@ export default () =>
     type: "postgres",
     url:
       process.env.DATABASE_URL ||
-      "postgres://postgres:secret@localhost:5432/postgres",
+      "postgres://postgres:secret@localhost:3011/postgres",
     entities: [User, Player, Game, Pokemon, Trainer],
     synchronize: true, // careful with this in production!
     logging: true,

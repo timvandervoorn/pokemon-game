@@ -71,68 +71,83 @@ export const checkWinner = (pokemon, player) => {
 export const checkMove = async (pokemonToUpdate, update) => {
   let hitChance
 
-  switch (update.payload.damage) {
-    case 10:
-      hitChance = Math.random()
-      if (hitChance < 0.9) {
-        pokemonToUpdate.health = pokemonToUpdate.health - update.payload.damage
-        if (pokemonToUpdate.health <= 0) {
-          pokemonToUpdate.health = 0
+  console.log(update)
+
+  if (update.payload.damage) {
+    switch (update.payload.damage) {
+      case 10:
+        hitChance = Math.random()
+        if (hitChance < 0.9) {
+          pokemonToUpdate.health =
+            pokemonToUpdate.health - update.payload.damage
+          if (pokemonToUpdate.health <= 0) {
+            pokemonToUpdate.health = 0
+          }
+        } else {
+          console.log("MISS!")
+          console.log(pokemonToUpdate.health)
         }
-      } else {
-        console.log("MISS!")
-        console.log(pokemonToUpdate.health)
-      }
 
-      break
+        break
 
-    case 15:
-      hitChance = Math.random()
-      if (hitChance < 0.8) {
-        pokemonToUpdate.health = pokemonToUpdate.health - update.payload.damage
-        if (pokemonToUpdate.health <= 0) {
-          pokemonToUpdate.health = 0
+      case 15:
+        hitChance = Math.random()
+        if (hitChance < 0.8) {
+          pokemonToUpdate.health =
+            pokemonToUpdate.health - update.payload.damage
+          if (pokemonToUpdate.health <= 0) {
+            pokemonToUpdate.health = 0
+          }
+        } else {
+          console.log("MISS!")
+          console.log(pokemonToUpdate.health)
         }
-      } else {
-        console.log("MISS!")
-        console.log(pokemonToUpdate.health)
-      }
 
-      break
+        break
 
-    case 20:
-      hitChance = Math.random()
-      if (hitChance < 0.7) {
-        console.log("HIT!")
-        pokemonToUpdate.health = pokemonToUpdate.health - update.payload.damage
-        if (pokemonToUpdate.health <= 0) {
-          pokemonToUpdate.health = 0
+      case 20:
+        hitChance = Math.random()
+        if (hitChance < 0.7) {
+          console.log("HIT!")
+          pokemonToUpdate.health =
+            pokemonToUpdate.health - update.payload.damage
+          if (pokemonToUpdate.health <= 0) {
+            pokemonToUpdate.health = 0
+          }
+          console.log(pokemonToUpdate.health)
+        } else {
+          console.log("MISS!")
+          console.log(pokemonToUpdate.health)
         }
-        console.log(pokemonToUpdate.health)
-      } else {
-        console.log("MISS!")
-        console.log(pokemonToUpdate.health)
-      }
 
-      break
+        break
 
-    case 25:
-      hitChance = Math.random()
-      if (hitChance < 0.6) {
-        console.log("HIT!")
-        pokemonToUpdate.health = pokemonToUpdate.health - update.payload.damage
-        if (pokemonToUpdate.health <= 0) {
-          pokemonToUpdate.health = 0
+      case 25:
+        hitChance = Math.random()
+        if (hitChance < 0.6) {
+          console.log("HIT!")
+          pokemonToUpdate.health =
+            pokemonToUpdate.health - update.payload.damage
+          if (pokemonToUpdate.health <= 0) {
+            pokemonToUpdate.health = 0
+          }
+          console.log(pokemonToUpdate.health)
+        } else {
+          console.log("MISS!")
+          console.log(pokemonToUpdate.health)
         }
-        console.log(pokemonToUpdate.health)
-      } else {
-        console.log("MISS!")
-        console.log(pokemonToUpdate.health)
-      }
 
-      break
-    default:
-      return pokemonToUpdate
+        break
+      default:
+        return pokemonToUpdate
+    }
+  }
+
+  if (update.payload === "potion") {
+    pokemonToUpdate.health = Number(pokemonToUpdate.health) + 20
+    if (pokemonToUpdate.health >= 100) {
+      pokemonToUpdate.health = 100
+    }
   }
 
   return pokemonToUpdate

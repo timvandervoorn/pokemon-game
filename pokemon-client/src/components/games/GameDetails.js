@@ -40,30 +40,18 @@ class GameDetails extends PureComponent {
     updateGame(game.id, board)
   }
 
-  selectMove = (move, payload, opponentPokemonId) => {
+  selectMove = (move, payload, pokemonId) => {
     const { game, updatePokemonGame, users } = this.props
 
     switch (move) {
       case attack:
-        // const currentUsers = Object.values(users)
-
-        // function findOpponent(users) {
-        //   return users.id !== userId
-        // }
-
-        // const opponent = currentUsers.find(findOpponent)
-
-        updatePokemonGame(
-          game.id,
-          move,
-          payload,
-          // opponent.id,
-          opponentPokemonId
-        )
+        updatePokemonGame(game.id, move, payload, pokemonId)
 
         break
       case item:
         console.log("case item")
+        console.log(move, payload, pokemonId)
+        updatePokemonGame(game.id, move, payload, pokemonId)
         break
       case pokemon:
         console.log("case pokemon")

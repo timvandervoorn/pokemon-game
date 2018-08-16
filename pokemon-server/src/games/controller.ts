@@ -28,14 +28,14 @@ import Pokemon from "../entities/pokemon"
 //   board: Board
 // }
 
-class PokemonUpdate {
-  move: string
-  payload: {
-    name: string
-    damage: number
-  }
-  opponentPokemonId: number
-}
+// class PokemonUpdate {
+//   move: string
+//   payload: {
+//     name: string
+//     damage: number
+//   }
+//   opponentPokemonId: number
+// }
 
 @JsonController()
 export default class GameController {
@@ -161,7 +161,7 @@ export default class GameController {
   async updateGame(
     @CurrentUser() user: User,
     @Param("id") gameId: number,
-    @Body() update: PokemonUpdate
+    @Body() update
   ) {
     const pokemonToUpdate = await Pokemon.findOneById(update.opponentPokemonId)
 
