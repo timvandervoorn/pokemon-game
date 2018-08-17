@@ -5,6 +5,7 @@ import "./battleArena.css"
 import ToggleDisplay from "react-toggle-display"
 import startBattleAudio from "../../audio/115-battlevstrainer.mp3"
 import winnerAudio from "../../audio/116-victoryvstrainer.mp3"
+import stillDre from '../../audio/stillDre.mp3'
 
 class BattleArena extends PureComponent {
   constructor() {
@@ -16,12 +17,14 @@ class BattleArena extends PureComponent {
       run: true,
       initial: true,
       fight2: true,
-      attack: ""
+      attack: "",
+      ghetto: false
     }
   }
 
   sound = new Audio(startBattleAudio)
   soundWinner = new Audio(winnerAudio)
+  dre = new Audio(stillDre)
 
   onPlay() {
     this.sound.play()
@@ -39,7 +42,18 @@ class BattleArena extends PureComponent {
     this.soundWinner.pause()
   }
 
-  componentWillUnmount() {}
+  onGhetto(){
+    this.dre.play()
+  }
+
+  onGhettoPause(){
+    this.dre.pause()
+  }
+
+  componentWillUnmount() {
+    this.onWinnerPause()
+    this.onGhettoPause()
+  }
 
   handleClick = e => {
     const test = Object.values(e.target)
@@ -70,8 +84,15 @@ class BattleArena extends PureComponent {
     })
   }
 
+  setGhetto = () => {
+    this.setState({
+      ghetto: !this.state.ghetto
+    }),
+    this.onGhetto()
+    // this.onPause()
+  }
+
   handleMove = (move, payload, opponentPokemonId) => {
-    console.log(payload)
     if (move === "attack") {
       this.setState({
         fight: !this.state.fight,
@@ -90,7 +111,6 @@ class BattleArena extends PureComponent {
   }
 
   render() {
-    console.log(this.props)
     const { userId, game, selectMove } = this.props
     if (game.status === "started") {
       this.onPlay()
@@ -99,6 +119,11 @@ class BattleArena extends PureComponent {
     if (game.status === "finished") {
       this.onPause()
       this.onWinner()
+      this.onGhettoPause()
+    }
+
+    if (this.state.ghetto){
+      this.onPause()
     }
 
     if (game === null) return "Loading..."
@@ -119,15 +144,13 @@ class BattleArena extends PureComponent {
       }
     })
 
-    console.log(currentTurn)
-    console.log(currentPlayerSymbol)
-
-    console.log(currentPlayerSymbol === currentTurn)
-
     return (
       <div>
         {!pokemon && "Loading"}
         <h1>BattleArena is rendered</h1>
+        <ToggleDisplay if={pokemon.health <= 50 && !this.state.ghetto}>
+        <button onClick={this.setGhetto}>Ghetto mode</button>
+        </ToggleDisplay>
 
         <div className="battle-scene">
           <div className="box-top-left">
@@ -171,7 +194,7 @@ class BattleArena extends PureComponent {
             </ToggleDisplay>
             <h4 className="level">lvl. 15</h4>
           </div>
-          <ToggleDisplay if={opponentPokemon.health !== "0"}>
+          <ToggleDisplay if={opponentPokemon.health !== "0" && !this.state.ghetto}>
             <div className="box-top-right">
               <img
                 class="pokemon-top"
@@ -179,14 +202,30 @@ class BattleArena extends PureComponent {
               />
             </div>
           </ToggleDisplay>
+          <ToggleDisplay if={opponentPokemon.health !== "0" && this.state.ghetto}>
+            <div className="box-top-right">
+              <img
+                class="pokemon-top"
+                src={require(`../../images/ghetto${opponentPokemon.name.toLowerCase()}.png`)}
+              />
+            </div>
+          </ToggleDisplay>
           <ToggleDisplay if={opponentPokemon.health === "0"}>
             <div className="box-top-right" />
           </ToggleDisplay>
-          <ToggleDisplay if={pokemon.health !== "0"}>
+          <ToggleDisplay if={pokemon.health !== "0" && !this.state.ghetto}>
             <div className="box-bottom-left">
               <img
                 class="pokemon-bottom"
                 src={require(`../../images/${pokemon.name.toLowerCase()}.png`)}
+              />
+            </div>
+          </ToggleDisplay>
+          <ToggleDisplay if={pokemon.health !== "0" && this.state.ghetto}>
+            <div className="box-bottom-left">
+              <img
+                class="pokemon-top"
+                src={require(`../../images/ghetto${pokemon.name.toLowerCase()}.png`)}
               />
             </div>
           </ToggleDisplay>
@@ -327,7 +366,7 @@ class BattleArena extends PureComponent {
                   </div>
                 </ToggleDisplay>
 
-                <ToggleDisplay if={!this.state.fight}>
+                <ToggleDisplay if={!this.state.fight && !this.state.ghetto}>
                   <div className="text-box-right">
                     {pokemon && (
                       <div>
@@ -387,6 +426,66 @@ class BattleArena extends PureComponent {
                     )}
                   </div>
                 </ToggleDisplay>
+                <ToggleDisplay if={!this.state.fight && this.state.ghetto}>
+                  <div className="text-box-right">
+                    {pokemon && (
+                      <div>
+                        <h4
+                          className="battle-text-top-left"
+                          name={pokemon.attacks[0]}
+                          onClick={() =>
+                            this.handleMove(
+                              "attack",
+                              {name: "knive", damage: 25},
+                              opponentPokemon.id
+                            )
+                          }
+                        >
+                          Knife
+                        </h4>
+                        <h4
+                          className="battle-text-bottom-left"
+                          name={pokemon.attacks[1]}
+                          onClick={() =>
+                            this.handleMove(
+                              "attack",
+                              {name: "rob him!", damage: 20},
+                              opponentPokemon.id
+                            )
+                          }
+                        >
+                          Rob him!
+                        </h4>
+                        <h4
+                          className="battle-text-top-right"
+                          name={pokemon.attacks[2]}
+                          onClick={() =>
+                            this.handleMove(
+                              "attack",
+                              {name: "pimp slap", damage: 15},
+                              opponentPokemon.id
+                            )
+                          }
+                        >
+                          Pimp slap
+                        </h4>
+                        <h4
+                          className="battle-text-bottom-right"
+                          name={pokemon.attacks[3]}
+                          onClick={() =>
+                            this.handleMove(
+                              "attack",
+                              {name: "make it rain", damage: 10},
+                              opponentPokemon.id
+                            )
+                          }
+                        >
+                          Make it rain
+                        </h4>
+                      </div>
+                    )}
+                  </div>
+                </ToggleDisplay>
                 <ToggleDisplay if={!this.state.item}>
                   <div className="text-box-right">
                     {pokemon && (
@@ -400,16 +499,36 @@ class BattleArena extends PureComponent {
                           Potion +20HP
                         </h4>
                         <h4
-                          className="battle-text-bottom-left"
-                          onClick={this.handleItem}
+                          className="battle-text-top-left"
+                          onClick={() =>
+                            this.handleMove("item", "potion", pokemon.id)
+                          }
                         >
-                          Revive
+                          Super potion +30HP
+                        </h4>
+                      </div>
+                    )}
+                  </div>
+                </ToggleDisplay>
+                <ToggleDisplay if={!this.state.item && this.state.ghetto}>
+                  <div className="text-box-right">
+                    {pokemon && (
+                      <div>
+                        <h4
+                          className="battle-text-top-left"
+                          onClick={() =>
+                            this.handleMove("item", "potion", pokemon.id)
+                          }
+                        >
+                          Codaisseur Kush +20HP
                         </h4>
                         <h4
-                          className="battle-text-top-right"
-                          onClick={this.handleItem}
+                          className="battle-text-bottom-left"
+                          onClick={() =>
+                            this.handleMove("item", "super-potion", pokemon.id)
+                          }
                         >
-                          Codaisseur coffee
+                          Pimp juice +30HP
                         </h4>
                       </div>
                     )}
