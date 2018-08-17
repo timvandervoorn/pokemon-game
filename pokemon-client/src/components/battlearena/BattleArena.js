@@ -89,7 +89,6 @@ class BattleArena extends PureComponent {
       ghetto: !this.state.ghetto
     }),
     this.onGhetto()
-    // this.onPause()
   }
 
   handleMove = (move, payload, opponentPokemonId) => {
@@ -147,7 +146,6 @@ class BattleArena extends PureComponent {
     return (
       <div>
         {!pokemon && "Loading"}
-        <h1>BattleArena is rendered</h1>
         <ToggleDisplay if={pokemon.health <= 50 && !this.state.ghetto}>
         <button onClick={this.setGhetto}>Ghetto mode</button>
         </ToggleDisplay>
@@ -258,7 +256,7 @@ class BattleArena extends PureComponent {
                 />
               </div>
             </ToggleDisplay>
-            <h4 className="level">lvl. </h4>
+            <h4 className="level">lvl. 15</h4>
             {pokemon.name && (
               <h4 className="hp">
                 {pokemon.health}
@@ -326,7 +324,6 @@ class BattleArena extends PureComponent {
                 <h4>Which move will {pokemon.name} use?!</h4>
               </div>
             </ToggleDisplay>
-
             {currentPlayerSymbol === currentTurn && (
               <div>
                 <ToggleDisplay fight={!this.state.fight}>
@@ -499,12 +496,20 @@ class BattleArena extends PureComponent {
                           Potion +20HP
                         </h4>
                         <h4
-                          className="battle-text-top-left"
+                          className="battle-text-bottom-left"
                           onClick={() =>
                             this.handleMove("item", "potion", pokemon.id)
                           }
                         >
                           Super potion +30HP
+                        </h4>
+                        <h4
+                          className="battle-text-top-right"
+                          onClick={() =>
+                            this.handleMove("item", "poison", pokemon.id)
+                          }
+                        >
+                          Codaisseur coffee
                         </h4>
                       </div>
                     )}
@@ -529,6 +534,14 @@ class BattleArena extends PureComponent {
                           }
                         >
                           Pimp juice +30HP
+                        </h4>
+                        <h4
+                          className="battle-text-bottom-right"
+                          onClick={() =>
+                            this.handleMove("item", "poison", pokemon.id)
+                          }
+                        >
+                          Non-Alcoholic drink
                         </h4>
                       </div>
                     )}
