@@ -97,6 +97,8 @@ export default class GameController {
       throw new NotFoundError(`Can't find pokemon!`)
     }
 
+    console.log(update)
+
     const previousHealth = pokemonToUpdate.health
 
     const pokemon = await checkMove(pokemonToUpdate, update)
@@ -120,6 +122,8 @@ export default class GameController {
     } else {
       game.hitOrMiss = "hit"
     }
+
+    game.item = update.payload
 
     game.turn = player.symbol === "x" ? "o" : "x"
 
