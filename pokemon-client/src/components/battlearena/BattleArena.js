@@ -150,7 +150,7 @@ class BattleArena extends PureComponent {
       <div>
         {!pokemon && "Loading"}
         <ToggleDisplay if={pokemon.health <= 50 && !this.state.ghetto}>
-        <button onClick={this.setGhetto}>Ghetto mode</button>
+        <button className="ghettoButton" onClick={this.setGhetto}>Ghetto mode</button>
         </ToggleDisplay>
 
         <div className="battle-scene">
