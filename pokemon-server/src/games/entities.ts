@@ -11,23 +11,15 @@ import User from "../users/entity"
 import Pokemon from "../entities/pokemon"
 
 export type Symbol = "x" | "o"
-export type Row = [Symbol | null, Symbol | null, Symbol | null]
-export type Board = [Row, Row, Row]
 
 type Status = "pending" | "started" | "finished"
 
 type HitOrMIs = "hit" | "miss"
 
-const emptyRow: Row = [null, null, null]
-const emptyBoard: Board = [emptyRow, emptyRow, emptyRow]
-
 @Entity()
 export class Game extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
-
-  @Column("json", { default: emptyBoard })
-  board: Board
 
   @Column("char", { length: 1, default: "x" })
   turn: Symbol
