@@ -18,7 +18,7 @@ class BattleArena extends PureComponent {
       initial: true,
       fight2: true,
       attack: "",
-      ghetto: false
+      ghetto: false,
     }
   }
 
@@ -91,12 +91,12 @@ class BattleArena extends PureComponent {
     this.onGhetto()
   }
 
-  handleMove = (move, payload, opponentPokemonId) => {
+  handleMove = (move, payload, opponentPokemonId, item) => {
     if (move === "attack") {
       this.setState({
         fight: !this.state.fight,
         fight2: !this.state.fight2,
-        attack: payload.name
+        attack: payload.name,
       })
     }
 
@@ -299,7 +299,7 @@ class BattleArena extends PureComponent {
                 <h4>You dont have any pokemon left!</h4>
               </div>
             </ToggleDisplay>
-            <ToggleDisplay if={!this.state.item}>
+            <ToggleDisplay if={!this.state.item && !this.state.item2}>
               <div className="battle-text text-box-left">
                 <h4>Choose your item!</h4>
               </div>
@@ -362,7 +362,6 @@ class BattleArena extends PureComponent {
                     </h4>
                   </div>
                 </ToggleDisplay>
-
                 <ToggleDisplay if={!this.state.fight && !this.state.ghetto}>
                   <div className="text-box-right">
                     {pokemon && (
@@ -490,7 +489,7 @@ class BattleArena extends PureComponent {
                         <h4
                           className="battle-text-top-left"
                           onClick={() =>
-                            this.handleMove("item", "potion", pokemon.id)
+                            this.handleMove("item", "potion", pokemon.id, {item: "potion. Gained 20HP"})
                           }
                         >
                           Potion +20HP
@@ -498,7 +497,7 @@ class BattleArena extends PureComponent {
                         <h4
                           className="battle-text-bottom-left"
                           onClick={() =>
-                            this.handleMove("item", "potion", pokemon.id)
+                            this.handleMove("item", "super-potion", pokemon.id, {item: "super potion. Gained 30HP"})
                           }
                         >
                           Super potion +30HP
@@ -506,7 +505,7 @@ class BattleArena extends PureComponent {
                         <h4
                           className="battle-text-top-right"
                           onClick={() =>
-                            this.handleMove("item", "poison", pokemon.id)
+                            this.handleMove("item", "poison", pokemon.id, {item: `codaisseur coffee... YUCK!! ${pokemon.name} almost died!!! -10HP`})
                           }
                         >
                           Codaisseur coffee
