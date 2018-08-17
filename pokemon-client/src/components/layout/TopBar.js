@@ -7,20 +7,26 @@ import { withRouter } from "react-router"
 import { userId } from "../../jwt"
 import { connect } from "react-redux"
 import AccountIcon from "material-ui-icons/AccountBox"
+import "./TopBar.css"
 
 const TopBar = props => {
   const { location, history, user } = props
 
   return (
     <AppBar position="absolute" style={{ zIndex: 10 }}>
-      <Toolbar>
+      <Toolbar className="media">
+        {/* <div className="media"> */}
         <Typography
           variant="title"
           color="inherit"
-          style={{ width: "100%", textAlign: "center" }}
+          style={{ flex: 1, width: "100%", textAlign: "center" }}
         >
-          <img src={require(`../../images/pokemon-nav-logo.png`)} />
+          <img
+            src={require(`../../images/pokemon-nav-logo.png`)}
+            className="header-logo"
+          />
         </Typography>
+        {/* </div> */}
         {user && (
           <Button color="inherit">
             <AccountIcon /> {user.firstName}
