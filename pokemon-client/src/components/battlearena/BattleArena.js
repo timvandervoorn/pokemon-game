@@ -13,6 +13,7 @@ class BattleArena extends PureComponent {
     this.state = {
       fight: true,
       item: true,
+      item2: true,
       pokemon: true,
       run: true,
       initial: true,
@@ -62,7 +63,8 @@ class BattleArena extends PureComponent {
     this.setState({
       [name]: value,
       initial: false,
-      fight2: true
+      fight2: true,
+      item2: true
     })
   }
 
@@ -102,7 +104,8 @@ class BattleArena extends PureComponent {
 
     if (move === "item") {
       this.setState({
-        item: !this.state.item
+        item: !this.state.item,
+        item2: !this.state.item2
       })
     }
 
@@ -299,9 +302,105 @@ class BattleArena extends PureComponent {
                 <h4>You dont have any pokemon left!</h4>
               </div>
             </ToggleDisplay>
-            <ToggleDisplay if={!this.state.item && !this.state.item2}>
+            <ToggleDisplay if={!this.state.item}>
               <div className="battle-text text-box-left">
                 <h4>Choose your item!</h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "potion" &&
+                !this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used {game.item} +20HP
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "super-potion" &&
+                !this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used {game.item} +30HP
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "poison" &&
+                !this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used codaisseur coffee.... YUCK!! {pokemon.name} almost died!! -10HP.
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "potion" &&
+                this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used codaisseur kush +20HP
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "super-potion" &&
+                this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used pimp juice +30HP
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "poison" &&
+                this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used non-alcoholic drink.... YUCK!! {pokemon.name} almost died!! -10HP.
+                </h4>
               </div>
             </ToggleDisplay>
             <ToggleDisplay
