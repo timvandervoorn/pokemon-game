@@ -7,7 +7,6 @@ import { userId } from "../../jwt"
 import { getPokemon, updatePokemonGame } from "../../actions/pokemon"
 import { getTrainers } from "../../actions/trainers"
 import Paper from "material-ui/Paper"
-import Board from "./Board"
 import "./GameDetails.css"
 import BattleArena from "../battlearena/BattleArena"
 import { attack, item, pokemon, run } from "../../constants"
@@ -22,23 +21,7 @@ class GameDetails extends PureComponent {
     }
   }
 
-  // componentDidUpdate() {
-  //   this.props.getPokemon()
-  // }
-
   joinGame = () => this.props.joinGame(this.props.game.id)
-
-  makeMove = (toRow, toCell) => {
-    const { game, updateGame } = this.props
-
-    const board = game.board.map((row, rowIndex) =>
-      row.map((cell, cellIndex) => {
-        if (rowIndex === toRow && cellIndex === toCell) return game.turn
-        else return cell
-      })
-    )
-    updateGame(game.id, board)
-  }
 
   selectMove = (move, payload, pokemonId) => {
     const { game, updatePokemonGame, users } = this.props
@@ -46,18 +29,13 @@ class GameDetails extends PureComponent {
     switch (move) {
       case attack:
         updatePokemonGame(game.id, move, payload, pokemonId)
-
         break
       case item:
-        console.log("case item")
-        console.log(move, payload, pokemonId)
         updatePokemonGame(game.id, move, payload, pokemonId)
         break
       case pokemon:
-        console.log("case pokemon")
         break
       case run:
-        console.log("case run")
         break
       default:
         break
@@ -96,10 +74,6 @@ class GameDetails extends PureComponent {
         {winner && <p>Winner: {users[winner].firstName}</p>}
 
         <hr />
-
-        {game.status !== "pending" && (
-          <Board board={game.board} makeMove={this.makeMove} />
-        )}
 
         {game.status !== "pending" && (
           <BattleArena
