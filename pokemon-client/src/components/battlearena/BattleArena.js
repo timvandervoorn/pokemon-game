@@ -13,12 +13,13 @@ class BattleArena extends PureComponent {
     this.state = {
       fight: true,
       item: true,
+      item2: true,
       pokemon: true,
       run: true,
       initial: true,
       fight2: true,
       attack: "",
-      ghetto: false
+      ghetto: false,
     }
   }
 
@@ -62,7 +63,8 @@ class BattleArena extends PureComponent {
     this.setState({
       [name]: value,
       initial: false,
-      fight2: true
+      fight2: true,
+      item2: true
     })
   }
 
@@ -91,18 +93,19 @@ class BattleArena extends PureComponent {
     this.onGhetto()
   }
 
-  handleMove = (move, payload, opponentPokemonId) => {
+  handleMove = (move, payload, opponentPokemonId, item) => {
     if (move === "attack") {
       this.setState({
         fight: !this.state.fight,
         fight2: !this.state.fight2,
-        attack: payload.name
+        attack: payload.name,
       })
     }
 
     if (move === "item") {
       this.setState({
-        item: !this.state.item
+        item: !this.state.item,
+        item2: !this.state.item2
       })
     }
 
@@ -306,6 +309,102 @@ class BattleArena extends PureComponent {
             </ToggleDisplay>
             <ToggleDisplay
               if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "potion" &&
+                !this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used {game.item} +20HP
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "super-potion" &&
+                !this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used {game.item} +30HP
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "poison" &&
+                !this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used codaisseur coffee.... YUCK!! {pokemon.name} almost died!! -10HP.
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "potion" &&
+                this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used codaisseur kush +20HP
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "super-potion" &&
+                this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used pimp juice +30HP
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
+                !this.state.item2 &&
+                !this.state.initial &&
+                pokemon.health !== "0" &&
+                opponentPokemon.health !== "0" &&
+                game.item === "poison" &&
+                this.state.ghetto
+              }
+            >
+              <div className="battle-text text-box-left">
+                <h4>
+                  {pokemon.name} used non-alcoholic drink.... YUCK!! {pokemon.name} almost died!! -10HP.
+                </h4>
+              </div>
+            </ToggleDisplay>
+            <ToggleDisplay
+              if={
                 !this.state.fight2 &&
                 !this.state.initial &&
                 pokemon.health !== "0" &&
@@ -362,7 +461,6 @@ class BattleArena extends PureComponent {
                     </h4>
                   </div>
                 </ToggleDisplay>
-
                 <ToggleDisplay if={!this.state.fight && !this.state.ghetto}>
                   <div className="text-box-right">
                     {pokemon && (
@@ -490,7 +588,7 @@ class BattleArena extends PureComponent {
                         <h4
                           className="battle-text-top-left"
                           onClick={() =>
-                            this.handleMove("item", "potion", pokemon.id)
+                            this.handleMove("item", "potion", pokemon.id, {item: "potion. Gained 20HP"})
                           }
                         >
                           Potion +20HP
@@ -498,7 +596,7 @@ class BattleArena extends PureComponent {
                         <h4
                           className="battle-text-bottom-left"
                           onClick={() =>
-                            this.handleMove("item", "potion", pokemon.id)
+                            this.handleMove("item", "super-potion", pokemon.id, {item: "super potion. Gained 30HP"})
                           }
                         >
                           Super potion +30HP
@@ -506,7 +604,7 @@ class BattleArena extends PureComponent {
                         <h4
                           className="battle-text-top-right"
                           onClick={() =>
-                            this.handleMove("item", "poison", pokemon.id)
+                            this.handleMove("item", "poison", pokemon.id, {item: `codaisseur coffee... YUCK!! ${pokemon.name} almost died!!! -10HP`})
                           }
                         >
                           Codaisseur coffee
