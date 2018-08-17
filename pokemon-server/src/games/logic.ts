@@ -96,5 +96,12 @@ export const checkMove = async (pokemonToUpdate, update) => {
     }
   }
 
+  if (update.payload === "poison") {
+    pokemonToUpdate.health = Number(pokemonToUpdate.health) - 10
+    if (pokemonToUpdate.health <= 0) {
+      pokemonToUpdate.health = 0
+    }
+  }
+
   return pokemonToUpdate
 }
