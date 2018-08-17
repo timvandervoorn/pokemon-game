@@ -112,6 +112,63 @@ const grassAttacks = [
   }
 ]
 
+const electricAttacks = [
+  {
+    name: "Thunder Bolt",
+    damage: 25
+  },
+  {
+    name: "Thunder Shock",
+    damage: 20
+  },
+  {
+    name: "Bite",
+    damage: 15
+  },
+  {
+    name: "Tackle",
+    damage: 10
+  }
+]
+
+const flyingAttacks = [
+  {
+    name: "Fly",
+    damage: 25
+  },
+  {
+    name: "Gust",
+    damage: 20
+  },
+  {
+    name: "Peck",
+    damage: 15
+  },
+  {
+    name: "Tackle",
+    damage: 10
+  }
+]
+
+const cocoonAttacks = [
+  {
+    name: "Harden",
+    damage: 25
+  },
+  {
+    name: "Harden",
+    damage: 20
+  },
+  {
+    name: "Harden",
+    damage: 15
+  },
+  {
+    name: "Harden",
+    damage: 10
+  }
+]
+
 const pokemonDefaults = [
   {
     name: "Bulbasaur",
@@ -152,6 +209,21 @@ const pokemonDefaults = [
     name: "Vaporeon",
     type: "normal",
     attacks: waterAttacks
+  },
+  {
+    name: "Pikachu",
+    type: "electric",
+    attacks: electricAttacks
+  },
+  {
+    name: "Pidgeot",
+    type: "flying",
+    attacks: flyingAttacks
+  },
+  {
+    name: "Metapod",
+    type: "bug",
+    attacks: cocoonAttacks
   }
 ]
 

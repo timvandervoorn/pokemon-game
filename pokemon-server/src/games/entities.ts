@@ -33,6 +33,9 @@ export class Game extends BaseEntity {
   @Column("text", { nullable: true })
   hitOrMiss: HitOrMIs
 
+  @Column("text", { nullable: true })
+  item: string
+
   // this is a relation, read more about them here:
   // http://typeorm.io/#/many-to-one-one-to-many-relations
   @OneToMany(_ => Player, player => player.game, { eager: true })
