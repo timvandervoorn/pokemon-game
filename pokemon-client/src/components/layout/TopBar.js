@@ -15,7 +15,6 @@ const TopBar = props => {
   return (
     <AppBar position="absolute" style={{ zIndex: 10 }}>
       <Toolbar className="media">
-        {/* <div className="media"> */}
         <Typography
           variant="title"
           color="inherit"
@@ -26,7 +25,7 @@ const TopBar = props => {
             className="header-logo"
           />
         </Typography>
-        {/* </div> */}
+
         {user && (
           <Button color="inherit">
             <AccountIcon /> {user.firstName}
